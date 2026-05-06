@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude Code Cheatsheet — GitHub Basics</title>
+<style>
+  :root {
+    --bg: #0f0f10;
+    --panel: #17171a;
+    --panel-2: #1d1d21;
+    --border: #2a2a30;
+    --text: #ececec;
+    --muted: #9a9aa3;
+    --accent: #d97757;
+    --accent-soft: rgba(217, 119, 87, 0.12);
+    --green: #7ec699;
+    --blue: #6fa8dc;
+    --yellow: #e6c07b;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(217, 119, 87, 0.15), transparent 60%),
+      var(--bg);
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 48px 0 64px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid rgba(217, 119, 87, 0.3);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    background: linear-gradient(180deg, #ffffff 0%, #b8b8c0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Sections ---------- */
+  section {
+    margin-bottom: 56px;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    margin: 0 0 20px;
+    padding-left: 44px;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .card p {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ---------- Code blocks ---------- */
+  .code {
+    background: #0a0a0c;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 0;
+    color: #e0e0e0;
+    position: relative;
+  }
+
+  .code .prompt { color: var(--accent); user-select: none; }
+  .code .comment { color: #6a6a73; font-style: italic; }
+  .code .string { color: var(--green); }
+  .code .keyword { color: var(--blue); }
+  .code .you { color: var(--yellow); }
+
+  pre.code { white-space: pre-wrap; word-break: break-word; }
+
+  /* ---------- Inline code ---------- */
+  code.inline {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 5px;
+    color: var(--accent);
+  }
+
+  /* ---------- Two-col grid ---------- */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .container { padding: 32px 16px 64px; }
+  }
+
+  /* ---------- Step list ---------- */
+  ol.steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ol.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 44px;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  ol.steps strong { color: #fff; }
+
+  /* ---------- Tip box ---------- */
+  .tip {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14.5px;
+  }
+
+  .tip strong { color: var(--accent); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ---------- TL;DR table ---------- */
+  table.cheats {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  table.cheats th, table.cheats td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  table.cheats th {
+    background: var(--panel-2);
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  table.cheats tr:last-child td { border-bottom: none; }
+
+  table.cheats td:first-child {
+    font-family: var(--mono);
+    color: var(--accent);
+    white-space: nowrap;
+    width: 1%;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge">Beginner Friendly</span>
+    <h1>Claude Code &amp; GitHub</h1>
+    <p>The simplest possible guide to talking with Claude in your terminal — and using it to commit and push code to GitHub.</p>
+  </div>
+
+  <!-- 1. WHAT IS IT -->
+  <section>
+    <h2><span class="num">1</span> What is Claude Code?</h2>
+    <p class="section-desc">Claude Code is an AI coding assistant that lives <em>in your terminal</em>. You chat with it like a teammate, and it reads your files, runs commands, edits code, and uses git for you.</p>
+    <div class="card">
+      <h3>Install it once</h3>
+      <p>Open Terminal and paste this:</p>
+      <pre class="code"><span class="prompt">$</span> npm install -g @anthropic-ai/claude-code</pre>
+      <p style="margin-top:12px;">Then start it from any folder:</p>
+      <pre class="code"><span class="prompt">$</span> cd ~/Desktop/my-project
+<span class="prompt">$</span> claude</pre>
+      <div class="tip"><strong>Tip:</strong> The first time you run it, it will ask you to sign in. Just follow the link.</div>
+    </div>
+  </section>
+
+  <!-- 2. HOW TO TALK -->
+  <section>
+    <h2><span class="num">2</span> How to talk to Claude</h2>
+    <p class="section-desc">Just type plain English. Be specific about what you want.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>✗ Vague</h3>
+        <pre class="code"><span class="you">&gt;</span> fix the bug</pre>
+      </div>
+      <div class="card">
+        <h3>✓ Specific</h3>
+        <pre class="code"><span class="you">&gt;</span> the login button on index.html
+   doesn't redirect after click —
+   please find and fix it</pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Useful slash commands</h3>
+      <table class="cheats">
+        <tr><td>/help</td><td>Show all commands</td></tr>
+        <tr><td>/clear</td><td>Start a fresh conversation</td></tr>
+        <tr><td>/init</td><td>Make Claude read your project and create a CLAUDE.md memory file</td></tr>
+        <tr><td>/review</td><td>Review your current changes</td></tr>
+        <tr><td>Esc</td><td>Stop Claude mid-response</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. GITHUB SETUP -->
+  <section>
+    <h2><span class="num">3</span> GitHub setup (one time)</h2>
+    <p class="section-desc">Before pushing code, make sure git and GitHub know who you are.</p>
+
+    <div class="card">
+      <h3>Install the GitHub CLI</h3>
+      <p>This is the easiest way to log in. Claude Code uses it under the hood.</p>
+      <pre class="code"><span class="prompt">$</span> brew install gh           <span class="comment"># mac</span>
+<span class="prompt">$</span> gh auth login             <span class="comment"># follow the prompts</span></pre>
+    </div>
+
+    <div class="card">
+      <h3>Tell git who you are</h3>
+      <pre class="code"><span class="prompt">$</span> git config --global user.name <span class="string">"Your Name"</span>
+<span class="prompt">$</span> git config --global user.email <span class="string">"you@email.com"</span></pre>
+    </div>
+  </section>
+
+  <!-- 4. THE FLOW -->
+  <section>
+    <h2><span class="num">4</span> The everyday GitHub flow</h2>
+    <p class="section-desc">This is the loop you'll repeat all day. Claude does almost all of it for you.</p>
+
+    <ol class="steps">
+      <li><strong>Make changes</strong> — ask Claude to write or edit code.
+        <pre class="code" style="margin-top:10px;"><span class="you">&gt;</span> add a dark mode toggle to the header</pre>
+      </li>
+
+      <li><strong>Check what changed</strong>
+        <pre class="code" style="margin-top:10px;"><span class="you">&gt;</span> show me what's changed</pre>
+        <p style="color:var(--muted); font-size:14px; margin:8px 0 0;">Claude runs <code class="inline">git status</code> and <code class="inline">git diff</code> and explains it in plain English.</p>
+      </li>
+
+      <li><strong>Commit</strong> — just ask.
+        <pre class="code" style="margin-top:10px;"><span class="you">&gt;</span> commit these changes</pre>
+        <p style="color:var(--muted); font-size:14px; margin:8px 0 0;">Claude reads the diff, writes a clean commit message, and runs <code class="inline">git commit</code> for you. It will <em>show you the message first</em> and ask before committing.</p>
+      </li>
+
+      <li><strong>Push to GitHub</strong>
+        <pre class="code" style="margin-top:10px;"><span class="you">&gt;</span> push to github</pre>
+        <p style="color:var(--muted); font-size:14px; margin:8px 0 0;">Done. Your code is on GitHub. If the repo doesn't exist on GitHub yet, ask Claude to <em>"create a github repo and push it"</em> — it will use <code class="inline">gh repo create</code>.</p>
+      </li>
+
+      <li><strong>Open a Pull Request</strong> (when working on a branch)
+        <pre class="code" style="margin-top:10px;"><span class="you">&gt;</span> open a PR to main with a good
+   title and description</pre>
+      </li>
+    </ol>
+
+    <div class="tip"><strong>Remember:</strong> Claude always asks before doing anything destructive (force push, deleting branches, etc). When in doubt, just answer "no" and rephrase your request.</div>
+  </section>
+
+  <!-- 5. STARTING FROM SCRATCH -->
+  <section>
+    <h2><span class="num">5</span> Start a brand new project</h2>
+    <p class="section-desc">From empty folder to "live on GitHub" in one conversation.</p>
+
+    <div class="card">
+      <pre class="code"><span class="prompt">$</span> mkdir my-cool-app && cd my-cool-app
+<span class="prompt">$</span> claude
+
+<span class="you">&gt;</span> initialize a git repo, build me a simple
+   landing page with HTML and CSS, then create
+   a github repo called "my-cool-app" and push it</pre>
+      <p style="margin-top:12px;">Claude will:</p>
+      <ul style="color: var(--muted); margin: 0; padding-left: 20px;">
+        <li>Run <code class="inline">git init</code></li>
+        <li>Write the files</li>
+        <li>Make the first commit</li>
+        <li>Run <code class="inline">gh repo create</code> and push</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6. CHEATSHEET -->
+  <section>
+    <h2><span class="num">6</span> The 10-second cheatsheet</h2>
+    <p class="section-desc">Print this. Stick it on your monitor.</p>
+
+    <table class="cheats">
+      <tr><th>Say to Claude</th><th>What happens</th></tr>
+      <tr><td>show changes</td><td>Runs git status + diff, explains them</td></tr>
+      <tr><td>commit this</td><td>Stages, writes message, commits</td></tr>
+      <tr><td>push</td><td>Pushes to GitHub</td></tr>
+      <tr><td>make a new branch called X</td><td>Creates and switches branch</td></tr>
+      <tr><td>open a PR</td><td>Creates a pull request via gh</td></tr>
+      <tr><td>undo my last commit</td><td>Soft reset, keeps your code</td></tr>
+      <tr><td>what's on this branch?</td><td>Shows commits ahead of main</td></tr>
+      <tr><td>pull latest</td><td>git pull from the remote</td></tr>
+    </table>
+  </section>
+
+  <!-- 7. SAFETY -->
+  <section>
+    <h2><span class="num">7</span> A few safety rules</h2>
+    <div class="card">
+      <ul style="margin:0; padding-left:20px; color:var(--muted);">
+        <li><strong style="color:#fff;">Read before you press Y.</strong> Claude shows you commands before running them — actually look.</li>
+        <li><strong style="color:#fff;">Commit often.</strong> Small commits are easier to undo than big ones.</li>
+        <li><strong style="color:#fff;">Never paste secrets.</strong> Don't put API keys or passwords into the chat.</li>
+        <li><strong style="color:#fff;">Use branches</strong> for anything bigger than a tiny fix. <code class="inline">git checkout -b feature/thing</code></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Built as a quick reference. Full docs at
+    <a href="https://docs.claude.com/claude-code" target="_blank" rel="noreferrer">docs.claude.com/claude-code</a>
+  </footer>
+
+</div>
+</body>
+</html>
