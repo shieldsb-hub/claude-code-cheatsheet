@@ -17,6 +17,7 @@ A deeper, written-out version of the cheatsheet website. If `index.html` is the 
 11. [Recovering from mistakes](#11-recovering-from-mistakes)
 12. [Safety rules](#12-safety-rules)
 13. [Troubleshooting](#13-troubleshooting)
+14. [Power tips for beginners](#14-power-tips-for-beginners)
 
 ---
 
@@ -298,6 +299,83 @@ By default, Claude asks before running anything. Approve it, or tweak permission
 
 **Pre-commit hook is blocking my commit**
 Don't bypass with `--no-verify`. Read what the hook is complaining about — it's usually a lint/format issue Claude can fix in seconds.
+
+---
+
+## 14. Power tips for beginners
+
+Six habits that compound fast. Learn one a week and you'll outpace people who've used Claude Code longer.
+
+### 14.1 Plan Mode — think before you build
+
+Press `Shift+Tab` twice (or type `/plan`) to enter Plan Mode. Claude analyzes the request, lays out a step-by-step plan, and **waits for your approval** before writing a single line of code.
+
+```
+> /plan add user authentication to the login page using JWT
+```
+
+This is the single most useful feature for beginners. Use it whenever the change touches more than one file. It catches wrong assumptions while they're still cheap to fix — instead of after Claude has rewritten half the codebase.
+
+### 14.2 CLAUDE.md — project memory
+
+A markdown file at the root of your repo. Claude reads it at the start of every session. It's where you record:
+
+- Your tech stack (e.g. *"TypeScript + Vite + Tailwind"*)
+- Coding conventions (*"2-space indent, no semicolons"*)
+- Workflow rules (*"never run `npm install` without asking"*)
+- Pointers to docs (*"see `architecture.md` for the data model"*)
+
+Generate a starter automatically:
+
+```
+> /init
+```
+
+**Keep it small — under ~150 lines.** Every line gets loaded into every session, so it eats your context budget. Don't paste code; link to file paths instead. Code drifts and goes stale, file references don't.
+
+### 14.3 Commit before risky changes
+
+```
+> commit my current state, then refactor the auth controller
+```
+
+If the AI breaks something while fixing something else (it happens), `git reset --hard HEAD` puts you back. Treat commits as Ctrl+Z. Cheap insurance.
+
+### 14.4 /clear between unrelated tasks
+
+Claude's response quality starts degrading once a conversation passes ~60% of its context window. Long, sprawling sessions accumulate noise that dilutes attention. When you switch tasks:
+
+```
+> /clear
+```
+
+Then start fresh. `CLAUDE.md` reloads automatically, so Claude won't forget your project — just the current conversation. This is the single easiest performance fix.
+
+### 14.5 The Shift+Tab mode cycle
+
+Press `Shift+Tab` to cycle through three modes:
+
+| Mode          | Behavior                                                       |
+|---------------|----------------------------------------------------------------|
+| default       | Asks before each tool/edit — safest, slowest                   |
+| auto-accept   | Runs without asking — fast, but trust the plan first           |
+| plan          | Plans only, executes nothing                                   |
+
+Recommended workflow: **plan → discuss → flip to auto-accept → let it run.** You stay in control during planning, then let Claude execute uninterrupted once the plan is right.
+
+### 14.6 Ask for a plan, even without Plan Mode
+
+You don't always need the formal mode. Plain-English asks work too:
+
+```
+> plan this before writing any code
+
+> what would you change and why? don't edit yet
+
+> walk me through your approach first
+```
+
+Costs 30 seconds. Saves a half-hour of unwinding bad changes. Make this your default for anything non-trivial.
 
 ---
 

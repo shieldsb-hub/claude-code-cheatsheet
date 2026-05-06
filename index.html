@@ -446,6 +446,65 @@
     </div>
   </section>
 
+  <!-- 8. POWER TIPS -->
+  <section>
+    <h2><span class="num">8</span> Power tips (worth learning early)</h2>
+    <p class="section-desc">Six small habits that turn Claude from "useful" into "ridiculous." Learn one a week.</p>
+
+    <div class="card">
+      <h3>1. Plan Mode — think before you build</h3>
+      <p>Press <code class="inline">Shift</code>+<code class="inline">Tab</code> twice (or type <code class="inline">/plan</code>) to make Claude write a step-by-step plan <em>before</em> touching any code. You approve, then it executes.</p>
+      <pre class="code"><span class="you">&gt;</span> /plan add user authentication to the
+   login page using JWT</pre>
+      <div class="tip"><strong>Why it matters:</strong> Catches wrong assumptions when they're cheap. The single highest-leverage feature for beginners.</div>
+    </div>
+
+    <div class="card">
+      <h3>2. CLAUDE.md — give Claude a memory</h3>
+      <p>A small markdown file at your repo root. Claude reads it at the start of <em>every</em> session. Put your tech stack, coding conventions, and "always do X" rules there.</p>
+      <pre class="code"><span class="you">&gt;</span> /init</pre>
+      <p style="margin-top:12px;">Claude scans your project and drafts a starter <code class="inline">CLAUDE.md</code>. Keep it under ~150 lines — every line costs context. Link to files instead of pasting code.</p>
+    </div>
+
+    <div class="card">
+      <h3>3. Commit before risky changes</h3>
+      <p>AI can break one thing while fixing another. A clean commit is your undo button.</p>
+      <pre class="code"><span class="you">&gt;</span> commit my current working state, then
+   refactor the auth controller</pre>
+      <p style="color:var(--muted); font-size:14px; margin-top:8px;">If something goes wrong: <code class="inline">git reset --hard HEAD</code> and you're back.</p>
+    </div>
+
+    <div class="card">
+      <h3>4. /clear between unrelated tasks</h3>
+      <p>Long sessions degrade. When you switch from "fix the login bug" to "write release notes" — start fresh.</p>
+      <pre class="code"><span class="you">&gt;</span> /clear</pre>
+      <p style="color:var(--muted); font-size:14px; margin-top:8px;"><code class="inline">CLAUDE.md</code> reloads automatically, so Claude won't forget your project — just the current conversation.</p>
+    </div>
+
+    <div class="card">
+      <h3>5. The Shift+Tab mode cycle</h3>
+      <p>Press <code class="inline">Shift</code>+<code class="inline">Tab</code> to cycle through modes:</p>
+      <table class="cheats" style="margin-top:8px;">
+        <tr><td>default</td><td>Asks before each action — safest</td></tr>
+        <tr><td>auto-accept</td><td>Runs without asking — fast, use after a good plan</td></tr>
+        <tr><td>plan</td><td>Plans only, won't execute</td></tr>
+      </table>
+      <p style="margin-top:12px;">Workflow: <strong>plan → review → auto-accept → done.</strong></p>
+    </div>
+
+    <div class="card">
+      <h3>6. Ask for a plan, even without Plan Mode</h3>
+      <p>Plain English works too:</p>
+      <pre class="code"><span class="you">&gt;</span> plan this before writing any code
+
+<span class="you">&gt;</span> what would you change and why?
+   don't edit anything yet
+
+<span class="you">&gt;</span> walk me through your approach first</pre>
+      <p style="color:var(--muted); font-size:14px; margin-top:8px;">Costs 30 seconds. Saves a half-hour of unwinding bad changes.</p>
+    </div>
+  </section>
+
   <footer>
     Built as a quick reference. Full docs at
     <a href="https://docs.claude.com/claude-code" target="_blank" rel="noreferrer">docs.claude.com/claude-code</a>
