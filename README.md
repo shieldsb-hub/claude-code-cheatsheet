@@ -23,11 +23,15 @@ That's it. No npm install, no build, no server.
 
 ## What's inside
 
-| File          | Purpose                                                    |
-|---------------|------------------------------------------------------------|
-| `index.html`  | The full single-page website (HTML + inline CSS)           |
-| `DOCS.md`     | Full markdown reference — same content, deeper examples    |
-| `README.md`   | This file                                                  |
+| File              | Purpose                                                    |
+|-------------------|------------------------------------------------------------|
+| `index.html`      | The full single-page website (HTML + inline CSS)           |
+| `DOCS.md`         | Full markdown reference — same content, deeper examples    |
+| `README.md`       | This file                                                  |
+| `CLAUDE.md`       | Project memory loaded by Claude Code in every session      |
+| `CONTRIBUTING.md` | How to propose changes                                     |
+| `CHANGELOG.md`    | User-visible change history                                |
+| `LICENSE`         | MIT                                                        |
 
 ## What it covers
 
